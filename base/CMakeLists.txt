@@ -7,9 +7,12 @@ PROJECT(base)
 
 ADD_DEFINITIONS(-g -W -Wall -Wno-deprecated -DLINUX -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO -DAC_HAS_WARNING -DAC_HAS_ERROR -DAC_HAS_CRITICAL -DTIXML_USE_STL -DHAVE_CXX_STDHEADERS ${CMAKE_CXX_FLAGS} -std=c++11)
 
-aux_source_directory(. DIR_SRCS)
+# aux_source_directory(. DIR_SRCS)
 
-add_executable(timestamp_test ${DIR_SRCS})
+# 指定生成目标
+# add_executable(timestamp_test ${DIR_SRCS})
+
+add_executable(LogStream_test LogStream.cpp LogStream_test.cpp )
 
 
 
