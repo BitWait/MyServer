@@ -9,7 +9,7 @@ namespace FileUtil
 	class ReadSmallFile
 	{
 	public:
-		ReadSmallFile(string & fileName);
+		ReadSmallFile(const string & fileName);
 		~ReadSmallFile();
 		template<typename String>
 		int readToString(int maxSize,
@@ -34,10 +34,10 @@ namespace FileUtil
 		String *content,
 		int64_t * fileSize = NULL,
 		int64_t * modifyTime = NULL,
-		int64_t * creatTime = NULL)
+		int64_t * createTime = NULL)
 	{
 		ReadSmallFile file(fileName);
-		return file.readToString(maxSize, content, fileSize, modifyTime, creatTime);
+		return file.readToString(maxSize, content, fileSize, modifyTime, createTime);
 	}
 
 	class AppendFile
@@ -46,15 +46,14 @@ namespace FileUtil
 		explicit AppendFile(const string &fileName);
 		~AppendFile();
 
-		int append(const char * longLine, const size_t len);
+		void append(const char * logLine, const size_t len);
 		void flush();
 		size_t writtenBytes()const{ return writtenBytes_; }
+
+		size_t write(const char* logline, size_t len);
 	private:
 		FILE *fp_;
-		char buf_[64*1024]
+		char buf_[64 * 1024];
 		size_t writtenBytes_;
 	};
-
-
-
-};
+}

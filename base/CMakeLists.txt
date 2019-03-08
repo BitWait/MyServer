@@ -14,5 +14,9 @@ ADD_DEFINITIONS(-g -W -Wall -Wno-deprecated -DLINUX -D_REENTRANT -D_FILE_OFFSET_
 
 add_executable(LogStream_test LogStream.cpp LogStream_test.cpp )
 
+add_executable(timestamp_test Timestamp_test.cpp timestamp.cpp )
+
+add_executable(FileUtil_test FileUtil_test.cpp fileutil.cpp )
+
 
 
