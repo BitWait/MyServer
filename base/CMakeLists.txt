@@ -20,7 +20,11 @@ ADD_DEFINITIONS(-g -W -Wall -Wno-deprecated -DLINUX -D_REENTRANT -D_FILE_OFFSET_
 
 #add_executable(Singleton_test Singleton_test.cpp )
 
-add_executable(Logfile_test Logfile_test.cpp logfile.cpp fileutil.cpp )
+add_executable(Logfile_test Logfile_test.cpp logfile.cpp fileutil.cpp logging.cpp timestamp.cpp  LogStream.cpp)
+
+add_executable(Logging_test Logging_test.cpp logging.cpp logfile.cpp timestamp.cpp  LogStream.cpp fileutil.cpp)
+
+
 
 
 

@@ -26,7 +26,7 @@ namespace detail
 			cookie_ = cookie; 
 		}
 
-		const char * data(){ return data_; }
+		const char * data()const{ return data_; }
 		int length()const{ return static_cast<int>(cur_ - data_); }
 		char * current(){ return cur_; }
 		void add(size_t len){ cur_ += len; }

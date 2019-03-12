@@ -7,7 +7,6 @@
 
 #include <inttypes.h>
 
-
 #include "fileutil.h"
 
 FileUtil::AppendFile::AppendFile(const string &fileName)
