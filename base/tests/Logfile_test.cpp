@@ -1,5 +1,5 @@
-#include "logfile.h"
-#include "logging.h"
+#include "../logfile.h"
+#include "../logging.h"
 #include <memory>
 #include <string>
 #include <unistd.h>

@@ -7,22 +7,25 @@ PROJECT(base)
 
 ADD_DEFINITIONS(-g -W -Wall -Wno-deprecated -DLINUX -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO -DAC_HAS_WARNING -DAC_HAS_ERROR -DAC_HAS_CRITICAL -DTIXML_USE_STL -DHAVE_CXX_STDHEADERS ${CMAKE_CXX_FLAGS} -std=c++11 )
 
-# aux_source_directory(. DIR_SRCS)
+set(base_SRCS
+	asynclogging.cpp
+	countdownlatch.cpp
+	logging.cpp
+	logfile.cpp
+	timestamp.cpp
+	LogStream.cpp
+	fileutil.cpp
+)
 
-# 指定生成目标
-# add_executable(timestamp_test ${DIR_SRCS})
 
-#add_executable(LogStream_test LogStream.cpp LogStream_test.cpp )
+add_library(base ${base_SRCS})
 
-#add_executable(timestamp_test Timestamp_test.cpp timestamp.cpp )
+file(GLOB HEADERS "*.h")
 
-#add_executable(FileUtil_test FileUtil_test.cpp fileutil.cpp )
+# 添加 tests 子目录
+add_subdirectory(tests)
 
-#add_executable(Singleton_test Singleton_test.cpp )
 
-add_executable(Logfile_test Logfile_test.cpp logfile.cpp fileutil.cpp logging.cpp timestamp.cpp  LogStream.cpp)
-
-add_executable(Logging_test Logging_test.cpp logging.cpp logfile.cpp timestamp.cpp  LogStream.cpp fileutil.cpp)
 
 
 
