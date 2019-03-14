@@ -1,39 +1,36 @@
-
 #1.cmake verson，指定cmake版本 
 cmake_minimum_required(VERSION 2.8)
 
 #2.project name，指定项目的名称，一般和项目的文件夹名称对应
-PROJECT(base)
+PROJECT(net)
 
 link_directories(
     ${PROJECT_SOURCE_DIR}/lib
 )
+
 ADD_DEFINITIONS(-g -W -Wall -Wno-deprecated -DLINUX -D_REENTRANT -D_FILE_OFFSET_BITS=64 -DAC_HAS_INFO -DAC_HAS_WARNING -DAC_HAS_ERROR -DAC_HAS_CRITICAL -DTIXML_USE_STL -DHAVE_CXX_STDHEADERS ${CMAKE_CXX_FLAGS} -std=c++11 )
 
-set(base_SRCS
-	asynclogging.cpp
-	countdownlatch.cpp
-	logging.cpp
-	logfile.cpp
-	timestamp.cpp
-	LogStream.cpp
-	fileutil.cpp
+set(net_SRCS
+	../base/timestamp.cpp
+	../base/countdownlatch.cpp
+	../base/fileutil.cpp
+	../base/logging.cpp
+	../base/logfile.cpp
+	../base/Logstream.cpp
+	../base/asynclogging.cpp
+
+	sockets.cpp
+	inetaddress.cpp
 )
 
 
-add_library(base ${base_SRCS})
+add_library(net ${net_SRCS})
 
-install(TARGETS base DESTINATION lib)
+# target_link_libraries(net ../base)
+
+install(TARGETS net DESTINATION lib)
 
 file(GLOB HEADERS "*.h")
 
 # 添加 tests 子目录
 add_subdirectory(tests)
-
-
-
-
-
-
-
-

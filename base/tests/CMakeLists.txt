@@ -1,6 +1,7 @@
 # 指定生成目标 
 add_executable(Asynclogging_test Asynclogging_test.cpp)
-# 添加链接�?target_link_libraries(Asynclogging_test base)
+# 添加链接
+target_link_libraries(Asynclogging_test base)
 
 add_executable(Logfile_test Logfile_test.cpp)
 target_link_libraries(Logfile_test base)
