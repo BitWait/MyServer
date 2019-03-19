@@ -20,7 +20,13 @@ set(net_SRCS
 	../base/asynclogging.cpp
 
 	sockets.cpp
+	accept.cpp
+	channel.cpp
 	inetaddress.cpp
+	timer.cpp
+	timerQueue.cpp
+	epollpoller.cpp
+	eventloop.cpp
 )
 
 
