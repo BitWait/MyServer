@@ -20,3 +20,6 @@ target_link_libraries(Timestamp_test base)
 
 add_executable(Fileutil_test Fileutil_test.cpp)
 target_link_libraries(Fileutil_test base)
+
+add_executable(ConfigFileReader_test ConfigFileReader_test.cpp)
+target_link_libraries(ConfigFileReader_test base)
