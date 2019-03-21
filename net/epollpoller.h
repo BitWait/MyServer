@@ -18,7 +18,7 @@ namespace net{
 		~EpollPoller();
 
 		virtual Timestamp poll(int timeoutMs, ChannelList* activeChannels);
-		virtual void updateChannel(Channel* channel);
+		virtual void updateChannel(Channel* channel);//维护和更新epollFd_数组
 		virtual void removeChannel(Channel* channel);
 
 		virtual bool hasChannel(Channel* channel) const;

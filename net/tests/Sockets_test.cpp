@@ -1,39 +1,38 @@
 #include "../sockets.h"
 #include "../inetaddress.h"
-
+#include <unistd.h>
 #include "../../base/logging.h"
+#include <stdio.h>
+#include "../accept.h"
+#include "../eventloop.h"
+#include <thread>
 
-
-using net::InetAddress;
+//using net::InetAddress;
 using namespace net;
+
+void newConnection(int sockFd, const InetAddress& peerAddr)
+{
+	printf("newConnection(): accept a new connection from %s\n", peerAddr.toIpPort().c_str());
+	::write(sockFd, "How are you\n", 13);
+	sockets::close(sockFd);
+}
 
 int main(void)
 {
-	char data[256];
-	Socket sock(sockets::createNonblockingOrDie());
-	
-	char buf[256] = { 0 };
-	sock.getTcpInfoString(buf, sizeof buf);
+	printf("pid = %d, tid = %d\n", getpid(), std::this_thread::get_id());
 
-	LOG_INFO << buf;
+	InetAddress addr(9981);
 
-	InetAddress addr(8888, true);
+	EventLoop loop;
+
+	Accept accept(&loop, addr, true);
 	
-	//sock.setReuseAddr(true);
-	//sock.setReusePort(true);
-	sock.bindAddress(addr);
-	sock.listen();
-	InetAddress addr1;
-	int connfd = sock.accept(&addr1);
-	LOG_INFO << connfd;
-	while (true)
-	{
-		memset(data, 0, sizeof data);
-		int ret = sockets::read(connfd, data, sizeof(data));
-		// 打印输出
-		fputs(data, stdout);
-		// 返回给客户端
-		sockets::write(connfd, data, ret);
-	}
-	sockets::close(connfd);
+	assert(!accept.listening());
+	
+	accept.setNewConnectCallBack(newConnection);
+
+	accept.listen();
+
+
+	loop.loop();
 }

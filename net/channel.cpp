@@ -31,6 +31,7 @@ void Channel::tie(const std::shared_ptr<void>&obj)
 	tied_ = true;
 }
 
+//根据revent_的值分别调用不同的用户回调
 void Channel::handleEvent(Timestamp recvTime)
 {
 	std::shared_ptr<void> guard;

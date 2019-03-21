@@ -18,3 +18,11 @@ target_link_libraries(TimerQueue_test net)
 add_executable(Channel_test Channel_test.cpp)
 
 target_link_libraries(Channel_test net)
+
+add_executable(EventLoopThread_test EventLoopThread_test.cpp)
+
+target_link_libraries(EventLoopThread_test net)
+
+add_executable(EventLoopThreadPool_test EventLoopThreadPool_test.cpp)
+
+target_link_libraries(EventLoopThreadPool_test net)

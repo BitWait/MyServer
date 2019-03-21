@@ -72,8 +72,8 @@ namespace net{
 		
 		EventLoop*                  loop_;
 		const int                   fd_;
-		int                         events_;
-		int                         revents_;
+		int                         events_;  //关心的IO事件，由用户设置
+		int                         revents_; //目前活动的事件
 		int                         index_;
 		bool                        logHup_;
 

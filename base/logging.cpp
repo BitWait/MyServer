@@ -17,7 +17,7 @@ const char* strerror_tl(int savedErrno)
 
 Logger::LogLevel initLogLevel()
 {
-	return Logger::INFO;
+	return Logger::TRACE;
 }
 
 Logger::LogLevel g_logLevel = initLogLevel();

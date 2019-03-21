@@ -1,3 +1,4 @@
+//对 struct sockaddr_in的简单封装  转换字节序    值语义
 #pragma once
 
 #include <netinet/in.h>
