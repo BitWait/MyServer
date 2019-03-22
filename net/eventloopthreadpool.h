@@ -29,7 +29,7 @@ namespace net{
 
 		bool started()const{ return started_; }
 
-		const std::string name()const{ return name_; }
+		const std::string& name()const{ return name_; }
 
 		const std::string info()const;
 	private:

@@ -26,3 +26,11 @@ target_link_libraries(EventLoopThread_test net)
 add_executable(EventLoopThreadPool_test EventLoopThreadPool_test.cpp)
 
 target_link_libraries(EventLoopThreadPool_test net)
+
+add_executable(Buffer_test Buffer_test.cpp)
+
+target_link_libraries(Buffer_test net)
+
+add_executable(Tcpserver_test1 Tcpserver_test1.cpp)
+
+target_link_libraries(Tcpserver_test1 net)

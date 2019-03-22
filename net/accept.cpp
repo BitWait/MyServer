@@ -13,7 +13,8 @@ using namespace net;
 
 
 Accept::Accept(EventLoop* loop, const InetAddress& listenAddr, bool reusePort)
-:acceptSocket_(sockets::createNonblockingOrDie()),
+:loop_(loop), 
+acceptSocket_(sockets::createNonblockingOrDie()),
 listening_(false),
 acceptChannel_(loop, acceptSocket_.fd()),
 idleFd_(::open("/dev/null", O_RDONLY | O_CLOEXEC))

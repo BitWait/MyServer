@@ -45,6 +45,20 @@ inline std::shared_ptr<To> down_pointer_cast(const std::shared_ptr<From>& f)
 }
 
 namespace net{
+	class Buffer;
+	class TcpConnection;
+	typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
 	typedef std::function<void()> TimerCallBack;
+
+	typedef std::function<void(const TcpConnectionPtr&)> ConnectionCallBack;
+	typedef std::function<void(const TcpConnectionPtr&)> CloseCallBack;
+	typedef std::function<void(const TcpConnectionPtr&)> WriteCompleteCallBack;
+	typedef std::function<void(const TcpConnectionPtr&, size_t)> HighWaterMarkCallBack;
+
+	// the data has been read to (buf, len)
+	typedef std::function<void(const TcpConnectionPtr&, Buffer*, Timestamp)> MessageCallBack;
+
+	void defaultConnectionCallBack(const TcpConnectionPtr& conn);
+	void defaultMessageCallBack(const TcpConnectionPtr& conn, Buffer* buffer, Timestamp recvTime);
 
 }

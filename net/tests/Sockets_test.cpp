@@ -10,6 +10,8 @@
 //using net::InetAddress;
 using namespace net;
 
+EventLoop* g_loop;
+
 void newConnection(int sockFd, const InetAddress& peerAddr)
 {
 	printf("newConnection(): accept a new connection from %s\n", peerAddr.toIpPort().c_str());
@@ -24,7 +26,7 @@ int main(void)
 	InetAddress addr(9981);
 
 	EventLoop loop;
-
+	g_loop = &loop;
 	Accept accept(&loop, addr, true);
 	
 	assert(!accept.listening());

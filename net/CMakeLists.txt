@@ -30,6 +30,9 @@ set(net_SRCS
 	eventloop.cpp
 	eventloopthread.cpp
 	eventloopthreadpool.cpp
+	buffer.cpp
+	tcpconnection.cpp
+	tcpserver.cpp
 )
 
 
