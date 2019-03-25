@@ -37,6 +37,15 @@ int main(void)
 
 	LOG_INFO << addr3.toPort();
 
+	InetAddress addr4("0.0.0.0", 8888);
+
+	LOG_INFO << addr4.toIp();
+
+	LOG_INFO << addr4.toIpPort();
+
+	LOG_INFO << addr4.toPort();
+
+
 	InetAddress addr(80);
 
 	// vi /etc/host 192.168.110.110 local

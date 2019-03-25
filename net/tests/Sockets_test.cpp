@@ -7,7 +7,7 @@
 #include "../eventloop.h"
 #include <thread>
 
-//using net::InetAddress;
+using net::InetAddress;
 using namespace net;
 
 EventLoop* g_loop;
@@ -23,18 +23,28 @@ int main(void)
 {
 	printf("pid = %d, tid = %d\n", getpid(), std::this_thread::get_id());
 
-	InetAddress addr(9981);
+	InetAddress addr("127.0.0.1", 9981);
+
+	LOG_INFO << addr.toIp();
+
+	LOG_INFO << addr.toIpPort();
+
+	LOG_INFO << addr.toPort();
 
 	EventLoop loop;
-	g_loop = &loop;
+	//g_loop = &loop;
 	Accept accept(&loop, addr, true);
 	
 	assert(!accept.listening());
 	
-	accept.setNewConnectCallBack(newConnection);
+	//accept.setNewConnectCallBack(newConnection);
 
 	accept.listen();
 
+	while (1)
+	{
+		;
+	}
 
-	loop.loop();
+	//loop.loop();
 }

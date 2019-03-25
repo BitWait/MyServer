@@ -9,6 +9,7 @@
 #include "../base/timestamp.h"
 #include "callback.h"
 #include "timerId.h"
+#include <iostream>
 
 namespace net{
 
@@ -70,7 +71,10 @@ namespace net{
 				abortNotInLoopThread();
 			}
 		}
-		bool isInLoopThread() const { return threadId_ == std::this_thread::get_id(); }
+		bool isInLoopThread() const 
+		{ 
+			return threadId_ == std::this_thread::get_id(); 
+		}
 		 bool callingPendingFunctors() const { return callingPendingFunctors_; }
 		bool eventHandling() const { return eventHandling_; }
 

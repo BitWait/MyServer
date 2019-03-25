@@ -11,7 +11,7 @@ namespace net{
 	{
 	public:
 		explicit InetAddress(uint16_t port = 0, bool loopBackOnly = false);
-		InetAddress(const std::string & ip, uint16_t len);
+		InetAddress(const std::string & ip, uint16_t port);
 		InetAddress(const struct sockaddr_in& addr)
 			:addr_(addr)
 		{

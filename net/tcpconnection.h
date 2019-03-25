@@ -127,4 +127,7 @@ namespace net{
 		Buffer                      inputBuffer_;
 		Buffer                      outputBuffer_; // FIXME: use list<Buffer> as output buffer.
 	};
+
+	typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;
+
 }

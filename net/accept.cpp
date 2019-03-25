@@ -1,8 +1,9 @@
 #include "accept.h"
 #include "../base/logging.h"
+#include "eventloop.h"
 #include "inetaddress.h"
 #include "sockets.h"
-#include "eventloop.h"
+
 
 #include <functional>
 #include <errno.h>
@@ -28,6 +29,7 @@ idleFd_(::open("/dev/null", O_RDONLY | O_CLOEXEC))
 
 Accept::~Accept()
 {
+	LOG_TRACE << idleFd_;
 	acceptChannel_.disableAll();
 	acceptChannel_.remove();
 	::close(idleFd_);
@@ -46,7 +48,7 @@ void Accept::handleRead()
 	loop_->assertInLoopThread();
 	InetAddress peerAddr;
 	int connfd = acceptSocket_.accept(&peerAddr);
-	if (connfd > 0)
+	if (connfd >= 0)
 	{
 		if (newConnectCallBack_)
 		{

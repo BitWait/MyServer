@@ -6,9 +6,10 @@
 #include "sockets.h"
 
 namespace net{
-	class InetAddress;
-	class EventLoop;
 	
+	class EventLoop;
+	class InetAddress;
+
 	class Accept
 	{
 	public:
