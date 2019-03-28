@@ -33,7 +33,7 @@ public:
 			<< (conn->connected() ? "UP" : "DOWN");
 		LOG_INFO << conn->getTcpInfoString();
 
-		conn->send("hello\n");
+		conn->send("hello");
 	}
 
 	void onMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp time)
@@ -70,6 +70,7 @@ int main(void)
 	LOG_INFO << "sizeof TcpConnection = " << sizeof(TcpConnection);
 	EventLoop loop;
 	InetAddress listenAddr("0.0.0.0", 20000);
+	LOG_INFO << listenAddr.toIpPort();
 	EchoServer server(&loop, listenAddr);
 
 	Singleton<EventLoopThreadPool>::Instance().Init(&loop, 0);

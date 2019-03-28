@@ -17,7 +17,7 @@ namespace net{
 	{
 	public:
 		TcpConnection(EventLoop* loop,
-			const string& naem,
+			const string& name,
 			int sockfd,
 			const InetAddress& localAddr,
 			const InetAddress& peerAddr);

@@ -19,6 +19,7 @@ set(net_SRCS
 	../base/logfile.cpp
 	../base/Logstream.cpp
 	../base/asynclogging.cpp
+	../base/configfilereader.cpp
 
 	sockets.cpp
 	accept.cpp
@@ -33,6 +34,7 @@ set(net_SRCS
 	buffer.cpp
 	tcpconnection.cpp
 	tcpserver.cpp
+	connector.cpp
 )
 
 
@@ -46,3 +48,5 @@ file(GLOB HEADERS "*.h")
 
 # Ìí¼Ó tests ×ÓÄ¿Â¼
 add_subdirectory(tests)
+
+add_subdirectory(examples)

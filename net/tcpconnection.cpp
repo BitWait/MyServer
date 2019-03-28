@@ -39,10 +39,10 @@ TcpConnection::TcpConnection(EventLoop* loop,
 	peerAddr_(peerAddr),
 	highWaterMark_(64 * 1024 * 1024)
 {
-	// 	channel_->setReadCallBack(std::bind(&TcpConnection::handleRead, this, std::placeholders::_1));
-	// 	channel_->setWriteCallBack(std::bind(&TcpConnection::handleWrite, this));
-	// 	channel_->setCloseCallBack(std::bind(&TcpConnection::handleClose, this));
-	// 	channel_->setErrorCallBack(std::bind(&TcpConnection::handleError, this));
+	channel_->setReadCallBack(std::bind(&TcpConnection::handleRead, this, std::placeholders::_1));
+	channel_->setWriteCallBack(std::bind(&TcpConnection::handleWrite, this));
+	channel_->setCloseCallBack(std::bind(&TcpConnection::handleClose, this));
+	channel_->setErrorCallBack(std::bind(&TcpConnection::handleError, this));
 	LOG_DEBUG << "TcpConnection::ctor[" << name_ << "] at " << this << " fd=" << sockfd;
 	socket_->setKeepAlive(true);
 }
