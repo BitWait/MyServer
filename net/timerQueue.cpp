@@ -2,8 +2,8 @@
 
 #include "../base/logging.h"
 #include "eventloop.h"
-#include "Timer.h"
-#include "TimerId.h"
+#include "timer.h"
+#include "timerId.h"
 
 #include <functional>
 
