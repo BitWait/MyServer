@@ -51,7 +51,7 @@ bool Socket::getTcpInfoString(char* buf, int len) const
 
 void Socket::bindAddress(const InetAddress& addr)
 {
-	sockets::bindOrDie(sockfd_, addr.getSockaddrInet());
+	sockets::bindOrDie(sockfd_, addr.getSockAddrInet());
 }
 
 void Socket::listen()
