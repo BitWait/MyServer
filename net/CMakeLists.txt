@@ -35,6 +35,7 @@ set(net_SRCS
 	tcpconnection.cpp
 	tcpserver.cpp
 	connector.cpp
+	tcpclient.cpp
 )
 
 

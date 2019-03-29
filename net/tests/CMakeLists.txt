@@ -38,3 +38,7 @@ target_link_libraries(Tcpserver_test1 net)
 add_executable(EchoServer_test EchoServer_test.cpp)
 
 target_link_libraries(EchoServer_test net)
+
+add_executable(TcpClientReg1_test TcpClientReg1_test.cpp)
+
+target_link_libraries(TcpClientReg1_test net)
