@@ -17,7 +17,7 @@ set(net_SRCS
 	../base/fileutil.cpp
 	../base/logging.cpp
 	../base/logfile.cpp
-	../base/Logstream.cpp
+	../base/LogStream.cpp
 	../base/asynclogging.cpp
 	../base/configfilereader.cpp
 
