@@ -80,7 +80,8 @@ namespace net{
 			const void* eol = memchr(start, '\n', beginWrite() - start);
 			return static_cast<const char*>(eol);
 		}
-
+		
+		//取回
 		void retrieve(size_t len)
 		{
 			assert(len <= readableBytes());
@@ -126,7 +127,7 @@ namespace net{
 			readerIndex_ = kCheapPrepend;
 			writerIndex_ = kCheapPrepend;
 		}
-
+		//以字符串形式取回所有数据
 		std::string retrieveAllAsString()
 		{
 			return retrieveAsString(readableBytes());;
