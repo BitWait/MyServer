@@ -16,7 +16,7 @@ int main(void)
 	writeStream.WriteCString(szData, strlen(szData));
 	writeStream.Flush();
 
-
+	cout << buf.size();
 	balloon::BinaryReadStream readStream(buf.c_str(), buf.size());
 	int32_t cmd;
 	int32_t seq;
