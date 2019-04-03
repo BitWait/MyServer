@@ -14,7 +14,7 @@ namespace net{
 	public:
 		static const size_t kCheapPrepend = 8;
 		static const size_t kInitialSize = 1024;
-		explicit Buffer(size_t initialSize = kInitialSize)
+		explicit Buffer(size_t initialSize = kInitialSize)   //为buffer默认分配1032个字节的位置
 			:buffer_(kCheapPrepend + initialSize),
 			readerIndex_(kCheapPrepend),
 			writerIndex_(kCheapPrepend)
@@ -48,6 +48,7 @@ namespace net{
 
 		const char* peek() const
 		{
+			//返回指向readindex_位置的指针
 			return begin() + readerIndex_;
 		}
 
@@ -359,6 +360,7 @@ namespace net{
 
 
 	private:
+		//buffer_.begin()代表迭代器，加*号表示值，取地址是让指针指向这个位置向后推移
 		char* begin()
 		{
 			return &*buffer_.begin();

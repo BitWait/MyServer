@@ -36,6 +36,7 @@ set(net_SRCS
 	tcpserver.cpp
 	connector.cpp
 	tcpclient.cpp
+	protocolstream.cpp
 )
 
 
