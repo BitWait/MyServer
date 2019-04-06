@@ -15,7 +15,7 @@
 
 using namespace std;
 
-namespace balloon
+namespace net
 {
 	//计算校验和
 	unsigned short checksum(const unsigned short *buffer, int size)

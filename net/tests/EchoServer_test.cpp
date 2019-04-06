@@ -22,8 +22,8 @@ public:
 		:loop_(loop),
 		server_(loop, lisrenAddr, "EchoServer")
 	{
-		server_.setConnectionCallback(std::bind(&EchoServer::newConnection, this, std::placeholders::_1));
-		server_.setMessageCallback(std::bind(&EchoServer::onMessage, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		server_.setConnectionCallBack(std::bind(&EchoServer::newConnection, this, std::placeholders::_1));
+		server_.setMessageCallBack(std::bind(&EchoServer::onMessage, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	}
 
 	void newConnection(const TcpConnectionPtr& conn)

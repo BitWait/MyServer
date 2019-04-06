@@ -43,6 +43,14 @@ EventLoop* EventLoopThread::startLoop()
 	return loop_;
 }
 
+void EventLoopThread::stopLoop()
+{
+	if (loop_ != NULL)
+		loop_->quit();
+
+	thread_->join();
+}
+
 void EventLoopThread::threadFunc()
 {
 	EventLoop loop;

@@ -51,7 +51,7 @@ namespace net
 		///   are assigned on a round-robin basis.
 
 		//void setThreadNum(int numThreads);
-		void setThreadInitCallback(const ThreadInitCallBack& cb)
+		void setThreadInitCallBack(const ThreadInitCallBack& cb)
 		{
 			threadInitCallBack_ = cb;
 		}
@@ -67,21 +67,21 @@ namespace net
 
 		/// Set connection callback.
 		/// Not thread safe.
-		void setConnectionCallback(const ConnectionCallBack& cb)
+		void setConnectionCallBack(const ConnectionCallBack& cb)
 		{
 			connectionCallBack_ = cb;
 		}
 
 		/// Set message callback.
 		/// Not thread safe.
-		void setMessageCallback(const MessageCallBack& cb)
+		void setMessageCallBack(const MessageCallBack& cb)
 		{
 			messageCallBack_ = cb;
 		}
 
 		/// Set write complete callback.
 		/// Not thread safe.
-		void setWriteCompleteCallback(const WriteCompleteCallBack& cb)
+		void setWriteCompleteCallBack(const WriteCompleteCallBack& cb)
 		{
 			writeCompleteCallBack_ = cb;
 		}

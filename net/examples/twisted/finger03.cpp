@@ -17,7 +17,7 @@ int main(void)
 {
 	EventLoop loop;
 	TcpServer server(&loop, InetAddress(1079), "Finger");
-	server.setConnectionCallback(onConnection);
+	server.setConnectionCallBack(onConnection);
 	Singleton<EventLoopThreadPool>::Instance().Init(&loop, 0);
 	Singleton<EventLoopThreadPool>::Instance().start();
 

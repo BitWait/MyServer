@@ -1,20 +1,24 @@
-#include "../base/configfilereader.h"
-#include "../base/logging.h"
-#include "../base/timestamp.h"
-
-#include "../base/asynclogging.h"
-
+#include <iostream>
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
-
+#include <signal.h>
 #include <stdio.h>
 #include <sys/resource.h>
-#include <iostream>
 
-using namespace std;
+#include "../base/configfilereader.h"
+#include "../base/logging.h"
+#include "../base/timestamp.h"
+#include "../base/asynclogging.h"
+#include "../utils/DaemonRun.h"
+#include "../base/singleton.h"
+#include "../net/eventloop.h"
+#include "../net/eventloopthreadpool.h"
+#include "IMServer.h"
 
+using namespace net;
+EventLoop g_mainLoop;
 AsyncLogging* g_asyncLog = NULL;
 void asyncOutput(const char* msg, int len)
 {
@@ -25,35 +29,41 @@ void asyncOutput(const char* msg, int len)
 	}
 }
 
-void bench(bool longLog)
+void prog_exit(int signo)
 {
-	Logger::setOutputFunc(asyncOutput);
+	std::cout << "program recv signal [" << signo << "] to exit." << std::endl;
 
-	int cnt = 0;
-	const int kBatch = 1000;
-	std::string empty = " ";
-	std::string longStr(3000, 'X');
-	longStr += " ";
+	Singleton<EventLoopThreadPool>::Instance().stop();
+	g_mainLoop.quit();
 
-	for (int t = 0; t < 30; ++t)
-	{
-		Timestamp start = Timestamp::now();
-		for (int i = 0; i < kBatch; ++i)
-		{
-			LOG_INFO << "Hello 0123456789" << " abcdefghijklmnopqrstuvwxyz "
-				<< (longLog ? longStr : empty)
-				<< cnt;
-			++cnt;
-		}
-		Timestamp end = Timestamp::now();
-		printf("%f\n", timeDifference(end, start) * 1000000 / kBatch);
-		struct timespec ts = { 0, 500 * 1000 * 1000 };
-		nanosleep(&ts, NULL);
-	}
+	//Logger::setOutput(defaultOutput);
 }
-int main(void)
+
+int main(int argc, char* argv[])
 {
-	CConfigFileReader config("mychatserver.conf");
+
+	//设置信号处理
+	signal(SIGCHLD, SIG_DFL);
+	signal(SIGPIPE, SIG_IGN);
+	signal(SIGINT, prog_exit);
+	signal(SIGTERM, prog_exit);
+
+	int ch;
+	bool bdaemon = false;
+	while ((ch = getopt(argc, argv, "d")) != -1)
+	{
+		switch (ch)
+		{
+		case 'd':
+			bdaemon = true;
+			break;
+		}
+	}
+
+	if (bdaemon)
+		daemon_run();
+
+	CConfigFileReader config("../etc/chatserver.conf");
 	const char* logfilepath = config.getConfigName("logfiledir");
 	if (logfilepath == NULL)
 	{
@@ -97,7 +107,18 @@ int main(void)
 	log.start();
 	g_asyncLog = &log;
 	Logger::setOutputFunc(asyncOutput);
-	bench(true);
 
+	Singleton<EventLoopThreadPool>::Instance().Init(&g_mainLoop, 4);
+	Singleton<EventLoopThreadPool>::Instance().start();
+
+	const char* listenip = config.getConfigName("listenip");
+	short listenport = (short)atol(config.getConfigName("listenport"));
+	Singleton<IMServer>::Instance().Init(listenip, listenport, &g_mainLoop);
+
+	g_mainLoop.loop();
+
+	LOG_INFO << "exit chatserver.";
+
+	return 0;
 
 }

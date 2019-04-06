@@ -16,6 +16,8 @@ namespace net{
 			const std::string& name = std::string());
 		~EventLoopThread();
 		EventLoop* startLoop();// 启动线程，该线程就成为了IO线程
+
+		void stopLoop();
 	private:
 		void threadFunc();
 

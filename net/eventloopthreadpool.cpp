@@ -55,6 +55,15 @@ void EventLoopThreadPool::start(const ThreadInitCallBack &cb /* = ThreadInitCall
 	}
 }
 
+void EventLoopThreadPool::stop()
+{
+	for (auto& iter : threads_)
+	{
+		iter->stopLoop();
+	}
+}
+
+
 EventLoop* EventLoopThreadPool::getNextLoop()
 {
 	baseLoop_->assertInLoopThread();

@@ -19,9 +19,9 @@ public:
 		: server_(loop, listenAddr, "ChatServer"),
 		codec_(std::bind(&ChatServer::onStringMessage, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3))
 	{
-		server_.setConnectionCallback(
+		server_.setConnectionCallBack(
 			std::bind(&ChatServer::onConnection, this, std::placeholders::_1));
-		server_.setMessageCallback(
+		server_.setMessageCallBack(
 			std::bind(&LengthHeaderCodec::onMessage, &codec_, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 	}
 

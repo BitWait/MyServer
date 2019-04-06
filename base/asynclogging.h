@@ -69,8 +69,8 @@ class AsyncLogging
 {
 public:
 
-	AsyncLogging(const string& basename,
-		size_t rollSize,
+	AsyncLogging(const char* basename = "logs/",
+		size_t rollSize = 1024 * 1024 * 1024,
 		int flushInterval = 3);
 
 	~AsyncLogging()

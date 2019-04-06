@@ -75,7 +75,7 @@ void FixedBuffer<SIZE>::cookieEnd()
 {
 }
 
-AsyncLogging::AsyncLogging(const string& basename,
+AsyncLogging::AsyncLogging(const char* basename,
 	size_t rollSize,
 	int flushInterval)
 	: flushInterval_(flushInterval),

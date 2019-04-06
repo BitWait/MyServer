@@ -19,7 +19,8 @@ namespace net{
 
 		void Init(EventLoop* baseLoop, int numThreads);
 		void start(const ThreadInitCallBack &cb = ThreadInitCallBack());
-
+		
+		void stop();
 		EventLoop* getNextLoop();
 
 		/// with the same hash code, it will always return the same EventLoop

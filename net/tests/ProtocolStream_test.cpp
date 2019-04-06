@@ -2,14 +2,14 @@
 #include <iostream>
 #include <string.h>
 using namespace std;
-using namespace balloon;
+using namespace net;
 
 int main(void)
 {
 	std::string buf;
 	char szData[256] = "{\"userid\":10001, \"type\":2, \"username\": \"helloworld\"}";
 
-	balloon::BinaryWriteStream writeStream(&buf);
+	net::BinaryWriteStream writeStream(&buf);
 	writeStream.WriteInt32(1000);
 	writeStream.WriteInt32(16);
 	cout << strlen(szData) << endl;
@@ -17,7 +17,7 @@ int main(void)
 	writeStream.Flush();
 
 	cout << buf.size();
-	balloon::BinaryReadStream readStream(buf.c_str(), buf.size());
+	net::BinaryReadStream readStream(buf.c_str(), buf.size());
 	int32_t cmd;
 	int32_t seq;
 	readStream.ReadInt32(cmd);

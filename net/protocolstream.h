@@ -15,7 +15,7 @@
 using namespace std;
 
 //二进制协议的打包解包类，内部的服务器之间通讯，统一采用这些类
-namespace balloon
+namespace net
 {
 	enum
 	{

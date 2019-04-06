@@ -8,9 +8,9 @@ using namespace net;
 TimeServer::TimeServer(net::EventLoop *loop, const net::InetAddress& addr)
 : server_(loop, addr, "TimeServer")
 {
-	server_.setConnectionCallback(
+	server_.setConnectionCallBack(
 		std::bind(&TimeServer::onConnection, this, std::placeholders::_1));
-	server_.setMessageCallback(
+	server_.setMessageCallBack(
 		std::bind(&TimeServer::onMessage, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
 }
 

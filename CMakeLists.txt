@@ -33,9 +33,13 @@ net/tcpserver.cpp
 net/eventloopthread.cpp
 net/eventloopthreadpool.cpp
 net/protocolstream.cpp
-net/protocolstream.cpp
 net/timer.cpp
 net/timerQueue.cpp
+)
+set(json_srcs
+jsoncpp-0.5.0/json_reader.cpp
+jsoncpp-0.5.0/json_value.cpp
+jsoncpp-0.5.0/json_writer.cpp
 )
 
 set(zlib_srcs
@@ -59,13 +63,16 @@ zlib1.2.11/ZlibUtil.cpp
 
 set(utils_srcs
 utils/StringUtil.cpp
+utils/URLEncodeUtil.cpp
+utils/MD5.cpp
+utils/DaemonRun.cpp
 )
 
 set(mychatserver_srcs
-chatserversrc/main.cpp)
-#chatserversrc/IMServer.cpp
-#chatserversrc/ClientSession.cpp
-#chatserversrc/TcpSession.cpp)
+chatserversrc/main.cpp
+chatserversrc/IMServer.cpp
+chatserversrc/chatSession.cpp
+chatserversrc/tcpSession.cpp)
 
 
 add_executable(mychatserver ${net_srcs} ${mychatserver_srcs} ${zlib_srcs} ${utils_srcs})
