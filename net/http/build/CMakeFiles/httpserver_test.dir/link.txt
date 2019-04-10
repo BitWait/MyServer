@@ -1,1 +1,0 @@
-/bin/c++       CMakeFiles/httpserver_test.dir/tests/HttpServer_test.cpp.o  -o httpserver_test  -L/home/lvy/code/net/http/build -rdynamic libhttp.a -l../net 

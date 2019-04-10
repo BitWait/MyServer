@@ -1,3 +1,0 @@
-/home/lvy/code/net/http/build/CMakeFiles/http.dir
-/home/lvy/code/net/http/build/CMakeFiles/httprequest_unittest.dir
-/home/lvy/code/net/http/build/CMakeFiles/httpserver_test.dir

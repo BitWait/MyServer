@@ -1,1 +1,0 @@
-/bin/c++       CMakeFiles/httprequest_unittest.dir/tests/HttpRequest_test.cpp.o  -o httprequest_unittest  -L/home/lvy/code/net/http/build -rdynamic libhttp.a -l../net 
