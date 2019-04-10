@@ -5,7 +5,7 @@
 #include "inetaddress.h"
 
 #include <memory>
-
+#include"anyone.h"
 struct tcp_info;
 
 namespace net{
@@ -34,6 +34,21 @@ namespace net{
 
 		void send(const void* message, int len);
 		void send(const string& message);
+
+		void setContext(const any& context)
+		{
+			context_ = context;
+		}
+
+		const any& getContext() const
+		{
+			return context_;
+		}
+
+		any* getMutableContext()
+		{
+			return &context_;
+		}
 		// void send(Buffer&& message); // C++11
 		void send(Buffer* message);  // this one will swap data
 		void shutdown(); // NOT thread safe, no simultaneous calling
@@ -126,6 +141,7 @@ namespace net{
 		size_t                      highWaterMark_;
 		Buffer                      inputBuffer_;
 		Buffer                      outputBuffer_; // FIXME: use list<Buffer> as output buffer.
+		any context_;
 	};
 
 	typedef std::shared_ptr<TcpConnection> TcpConnectionPtr;

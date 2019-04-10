@@ -37,6 +37,7 @@ set(net_SRCS
 	connector.cpp
 	tcpclient.cpp
 	protocolstream.cpp
+	anyone.h
 )
 
 

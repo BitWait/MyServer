@@ -1,12 +1,13 @@
-#include <muduo/base/Logging.h>
-#include <muduo/net/EventLoop.h>
-#include <muduo/net/TcpServer.h>
+#include "../../../base/logging.h"
+#include "../../eventloop.h"
+#include "../../tcpserver.h"
+#include "../../../base/singleton.h"
+#include "../../eventloopthreadpool.h"
 
 #include <stdio.h>
 #include <unistd.h>
 
-using namespace muduo;
-using namespace muduo::net;
+using namespace net;
 
 void onHighWaterMark(const TcpConnectionPtr& conn, size_t len)
 {
@@ -26,7 +27,7 @@ void onConnection(const TcpConnectionPtr& conn)
   {
     LOG_INFO << "FileServer - Sending file " << g_file
              << " to " << conn->peerAddress().toIpPort();
-    conn->setHighWaterMarkCallback(onHighWaterMark, kBufSize+1);
+    conn->setHighWaterMarkCallBack(onHighWaterMark, kBufSize+1);
 
     FILE* fp = ::fopen(g_file, "rb");
     if (fp)
@@ -47,9 +48,9 @@ void onConnection(const TcpConnectionPtr& conn)
 
 void onWriteComplete(const TcpConnectionPtr& conn)
 {
-  const FilePtr& fp = boost::any_cast<const FilePtr&>(conn->getContext());
+  FilePtr fp = any_cast<FilePtr>(conn->getContext());
   char buf[kBufSize];
-  size_t nread = ::fread(buf, 1, sizeof buf, get_pointer(fp));
+  size_t nread = ::fread(buf, 1, sizeof buf, fp);
   if (nread > 0)
   {
     conn->send(buf, static_cast<int>(nread));

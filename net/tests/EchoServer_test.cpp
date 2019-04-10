@@ -7,10 +7,7 @@
 
 #include <thread>
 #include <unistd.h>
-
-
 #include <utility>
-
 #include <stdio.h>
 
 using namespace net;
@@ -69,7 +66,7 @@ int main(void)
 	//LOG_INFO << "pid = " << getpid() << std::this_thread::get_id();
 	LOG_INFO << "sizeof TcpConnection = " << sizeof(TcpConnection);
 	EventLoop loop;
-	InetAddress listenAddr("0.0.0.0", 20000);
+	InetAddress listenAddr(20000);
 	LOG_INFO << listenAddr.toIpPort();
 	EchoServer server(&loop, listenAddr);
 
