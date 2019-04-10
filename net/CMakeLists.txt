@@ -45,11 +45,22 @@ add_library(net ${net_SRCS})
 
 # target_link_libraries(net ../base)
 
-install(TARGETS net DESTINATION lib)
+#install(TARGETS net DESTINATION lib)
 
-file(GLOB HEADERS "*.h")
+#file(GLOB HEADERS "*.h")
+
+set(http_SRCS
+  http/HttpServer.cpp
+  http/HttpResponse.cpp
+  http/HttpContext.cpp
+  )
+
+add_library(http ${http_SRCS})
+target_link_libraries(http net)
 
 # Ìí¼Ó tests ×ÓÄ¿Â¼
 add_subdirectory(tests)
 
 add_subdirectory(examples)
+
+add_subdirectory(http)
