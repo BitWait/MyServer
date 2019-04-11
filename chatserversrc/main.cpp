@@ -15,6 +15,7 @@
 #include "../base/singleton.h"
 #include "../net/eventloop.h"
 #include "../net/eventloopthreadpool.h"
+#include "../mysql/mysqlmanager.h"
 #include "IMServer.h"
 
 using namespace net;
@@ -108,12 +109,23 @@ int main(int argc, char* argv[])
 	g_asyncLog = &log;
 	Logger::setOutputFunc(asyncOutput);
 
+	const char* dbserver = config.getConfigName("dbserver");
+	const char* dbuser = config.getConfigName("dbuser");
+	const char* dbpassword = config.getConfigName("dbpassword");
+	const char* dbname = config.getConfigName("dbname");
+	if (!Singleton<CMysqlManager>::Instance().Init(dbserver, dbuser, dbpassword, dbname))
+	{
+		LOG_FATAL << "Init mysql failed, please check your database config..............";
+	}
+
 	Singleton<EventLoopThreadPool>::Instance().Init(&g_mainLoop, 4);
 	Singleton<EventLoopThreadPool>::Instance().start();
 
 	const char* listenip = config.getConfigName("listenip");
 	short listenport = (short)atol(config.getConfigName("listenport"));
 	Singleton<IMServer>::Instance().Init(listenip, listenport, &g_mainLoop);
+
+	
 
 	g_mainLoop.loop();
 
