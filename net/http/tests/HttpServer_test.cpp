@@ -9,6 +9,26 @@
 #include <iostream>
 #include <map>
 
+//////////////////////////////////////////////////////////////////////////
+/*²âÊÔÓÃÀý£º
+POST /hello HTTP/1.1
+Connection: Keep-Alive
+Content-Length: 9
+Host: 192.169.6.150:8000
+User-Agent:
+Accept-Encoding:
+
+{"hello"}
+
+POST /favicon.ico HTTP/1.1
+Connection: Keep-Alive
+Content-Length: 9
+Host: 192.169.6.150:8000
+User-Agent:
+Accept-Encoding:
+
+{"hello"}
+*/
 
 using namespace net;
 
@@ -32,7 +52,7 @@ void onRequest(const HttpRequest& req, HttpResponse* resp)
     resp->setStatusCode(HttpResponse::k200Ok);
     resp->setStatusMessage("OK");
     resp->setContentType("text/html");
-    resp->addHeader("Server", "Muduo");
+    resp->addHeader("Server", "BitWait");
     string now = Timestamp::now().toFormattedString();
     resp->setBody("<html><head><title>This is title</title></head>"
         "<body><h1>Hello</h1>Now is " + now +
@@ -50,7 +70,7 @@ void onRequest(const HttpRequest& req, HttpResponse* resp)
     resp->setStatusCode(HttpResponse::k200Ok);
     resp->setStatusMessage("OK");
     resp->setContentType("text/plain");
-    resp->addHeader("Server", "Muduo");
+    resp->addHeader("Server", "BitWait");
     resp->setBody("hello, world!\n");
   }
   else
@@ -64,7 +84,7 @@ void onRequest(const HttpRequest& req, HttpResponse* resp)
 int main(int argc, char* argv[])
 {
   EventLoop loop;
-  HttpServer server(&loop, InetAddress(8000), "dummy");
+  HttpServer server(&loop, InetAddress(8000), "HttpServer");
   Singleton<EventLoopThreadPool>::Instance().Init(&loop, 0);
   Singleton<EventLoopThreadPool>::Instance().start();
   server.setHttpCallBack(onRequest);
