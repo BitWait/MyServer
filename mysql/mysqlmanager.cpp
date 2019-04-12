@@ -1,5 +1,6 @@
 #include "mysqlmanager.h"
 #include <sstream>
+#include <memory>
 #include "../base/logging.h"
 #include "../base/singleton.h"
 //#include "mysqlthrdmgr.h"
@@ -148,7 +149,7 @@ bool CMysqlManager::_IsDBExist()
 		return false;
 	}
 
-	QueryResult* pResult = m_poConn->Query("show databases");
+	std::shared_ptr<QueryResult> pResult = m_poConn->Query("show databases");
 	if (NULL == pResult)
 	{
 		LOG_INFO << "CMysqlManager::_IsDBExist, no database(" << m_strDataBase << ")";
@@ -223,7 +224,7 @@ bool CMysqlManager::_CheckTable(const STableInfo& table)
 
 	stringstream ss;
 	ss << "desc " << table.m_strName;
-	QueryResult* pResult = m_poConn->Query(ss.str());
+	std::shared_ptr<QueryResult> pResult = m_poConn->Query(ss.str());
 	if (NULL == pResult)
 	{
 		LOG_INFO << "CMysqlManager::_CheckTable, no table" << table.m_strName << ", begin create.....";
@@ -277,7 +278,6 @@ bool CMysqlManager::_CheckTable(const STableInfo& table)
 			}
 		}
 	}
-
 	return true;
 }
 

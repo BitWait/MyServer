@@ -91,7 +91,8 @@ set(mychatserver_srcs
 chatserversrc/main.cpp
 chatserversrc/IMServer.cpp
 chatserversrc/chatSession.cpp
-chatserversrc/tcpSession.cpp)
+chatserversrc/tcpSession.cpp
+chatserversrc/usermanager.cpp)
 
 
 add_executable(mychatserver ${net_srcs} ${mychatserver_srcs} ${zlib_srcs} ${utils_srcs} ${mysql_srcs} ${database_srcs})

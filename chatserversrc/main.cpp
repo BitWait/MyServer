@@ -17,6 +17,7 @@
 #include "../net/eventloopthreadpool.h"
 #include "../mysql/mysqlmanager.h"
 #include "IMServer.h"
+#include "usermanager.h"
 
 using namespace net;
 EventLoop g_mainLoop;
@@ -116,6 +117,11 @@ int main(int argc, char* argv[])
 	if (!Singleton<CMysqlManager>::Instance().Init(dbserver, dbuser, dbpassword, dbname))
 	{
 		LOG_FATAL << "Init mysql failed, please check your database config..............";
+	}
+
+	if (!Singleton<UserManager>::Instance().Init(dbserver, dbuser, dbpassword, dbname))
+	{
+		LOG_FATAL << "Init UserManager failed, please check your database config..............";
 	}
 
 	Singleton<EventLoopThreadPool>::Instance().Init(&g_mainLoop, 4);

@@ -4,7 +4,8 @@
 #include <stdint.h>
 #include <mysql/mysql.h>
 #include <mysql/errmsg.h>
-#include "queryResult.h"
+#include "queryresult.h"
+#include <memory>
 
 #define MAX_QUERY_LEN   1024
 
@@ -23,13 +24,15 @@ public:
 	~CDatabaseMysql(void);
 
 	bool Initialize(const string& host, const string& user, const string& pwd, const string& dbname);
-	QueryResult* Query(const char *sql);
-	QueryResult* Query(const string& sql)
+	//QueryResult* Query(const char *sql);
+	std::shared_ptr<QueryResult> Query(const char *sql);
+
+	std::shared_ptr<QueryResult> Query(const string& sql)
 	{
 		return Query(sql.c_str());
 	}
 
-	QueryResult* PQuery(const char *format, ...);
+	std::shared_ptr<QueryResult> PQuery(const char *format, ...);
 	bool Execute(const char* sql);
 	bool Execute(const char* sql, uint32_t& uAffectedCount, int& nErrno);
 	bool PExecute(const char *format, ...);

@@ -69,7 +69,7 @@ bool CDatabaseMysql::Initialize(const string& host, const string& user, const st
 }
 
 //TODO: 这个函数要区分一下空数据集和出错两种情况
-QueryResult* CDatabaseMysql::Query(const char *sql)
+std::shared_ptr<QueryResult> CDatabaseMysql::Query(const char *sql)
 {
 	if (!m_Mysql)
 	{
@@ -138,14 +138,15 @@ QueryResult* CDatabaseMysql::Query(const char *sql)
 	//      return NULL;
 	//  }
 	//此处可能有内存泄漏
-	QueryResult *queryResult = new QueryResult(result, rowCount, fieldCount);
 
+	//QueryResult *queryResult = new QueryResult(result, rowCount, fieldCount);
+	std::shared_ptr<QueryResult> queryResult(new QueryResult(result, rowCount, fieldCount));
 	queryResult->NextRow();
 
 	return queryResult;
 }
 
-QueryResult* CDatabaseMysql::PQuery(const char *format, ...)
+std::shared_ptr<QueryResult> CDatabaseMysql::PQuery(const char *format, ...)
 {
 	if (!format) return NULL;
 	//处理扩展参数

@@ -1,5 +1,5 @@
-#include "queryResult.h"
-#include "../base/Logging.h"
+#include "queryresult.h"
+#include "../base/logging.h"
 
 
 QueryResult::QueryResult(MYSQL_RES *result, uint64_t rowCount, uint32_t fieldCount)

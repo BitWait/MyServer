@@ -3,6 +3,7 @@
  * zhangyl 2018.05.16
  */
 #include "URLEncodeUtil.h"
+#include <stdlib.h>
 
 bool URLEncodeUtil::Encode(const std::string& src, std::string& dst)
 {
