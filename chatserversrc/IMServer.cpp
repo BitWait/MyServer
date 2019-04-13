@@ -3,7 +3,7 @@
 #include "../base/singleton.h"
 #include "IMServer.h"
 #include "chatSession.h"
-//#include "UserManager.h"
+#include "usermanager.h"
 
 bool IMServer::Init(const char* ip, short port, EventLoop* loop)
 {
@@ -32,5 +32,11 @@ void IMServer::OnConnection(std::shared_ptr<TcpConnection> conn)
 	{
 		//OnClose(conn);
 	}
+}
+
+void IMServer::GetSessions(std::list<std::shared_ptr<ChatSession>>& sessions)
+{
+	std::lock_guard<std::mutex> guard(m_sessionMutex);
+	sessions = m_sessions;
 }
 

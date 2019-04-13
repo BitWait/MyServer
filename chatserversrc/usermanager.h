@@ -63,6 +63,9 @@ public:
 
 	UserManager(const UserManager& rhs) = delete;
 	UserManager& operator=(const UserManager& rhs) = delete;
+
+	bool GetUserInfoByUserId(int32_t userid, User& u);
+	bool GetUserInfoByUserId(int32_t userid, User*& u);
 private:
 	bool LoadUsersFromDb();
 	bool LoadRelationshipFromDb(int32_t userid, std::list<FriendInfo>& r);

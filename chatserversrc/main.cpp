@@ -18,6 +18,7 @@
 #include "../mysql/mysqlmanager.h"
 #include "IMServer.h"
 #include "usermanager.h"
+#include "monitorserver.h"
 
 using namespace net;
 EventLoop g_mainLoop;
@@ -131,7 +132,10 @@ int main(int argc, char* argv[])
 	short listenport = (short)atol(config.getConfigName("listenport"));
 	Singleton<IMServer>::Instance().Init(listenip, listenport, &g_mainLoop);
 
-	
+	const char* monitorlistenip = config.getConfigName("monitorlistenip");
+	short monitorlistenport = (short)atol(config.getConfigName("monitorlistenport"));
+	const char* monitortoken = config.getConfigName("monitortoken");
+	Singleton<MonitorServer>::Instance().Init(monitorlistenip, monitorlistenport, &g_mainLoop, monitortoken);
 
 	g_mainLoop.loop();
 

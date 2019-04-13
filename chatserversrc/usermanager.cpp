@@ -44,6 +44,36 @@ bool UserManager::Init(const char* dbServer, const char* dbUserName, const char*
 	return true;
 }
 
+bool UserManager::GetUserInfoByUserId(int32_t userid, User& u)
+{
+	std::lock_guard<std::mutex> guard(m_mutex);
+	for (const auto& iter : m_allCachedUsers)
+	{
+		if (iter.userid == userid)
+		{
+			u = iter;
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool UserManager::GetUserInfoByUserId(int32_t userid, User*& u)
+{
+	std::lock_guard<std::mutex> guard(m_mutex);
+	for (auto& iter : m_allCachedUsers)
+	{
+		if (iter.userid == userid)
+		{
+			u = &iter;
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool UserManager::LoadUsersFromDb()
 {
 	std::unique_ptr<CDatabaseMysql> pConn;
