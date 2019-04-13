@@ -8,7 +8,7 @@
 #include "../base/logging.h"
 #include "channel.h"
 
-using namespace net;
+using namespace reactor;
 
 static_assert(EPOLLIN == POLLIN, "EPOLLIN == POLLIN");
 static_assert(EPOLLPRI == POLLPRI, "EPOLLPRI == POLLPRI");
@@ -26,25 +26,13 @@ namespace
 
 EpollPoller::EpollPoller(EventLoop* loop)
 :epollfd_(::epoll_create1(EPOLL_CLOEXEC)),
-events_(kInitEventListSize),
 ownerLoop_(loop)
 {
-	if (epollfd_ < 0)
-	{
-		LOG_SYSFATAL << "EPollPoller::EPollPoller";
-	}
 }
 
 EpollPoller::~EpollPoller()
 {
-	::close(epollfd_);
-}
 
-bool EpollPoller::hasChannel(Channel* channel) const
-{
-	assertInLoopThread();
-	ChannelMap::const_iterator it = channels_.find(channel->fd());
-	return it != channels_.end() && it->second == channel;
 }
 
 Timestamp EpollPoller::poll(int timeoutMs, ChannelList* activeChannels)
@@ -59,14 +47,10 @@ Timestamp EpollPoller::poll(int timeoutMs, ChannelList* activeChannels)
 	{
 		LOG_TRACE << numEvents << " events happended";
 		fillActiveChannels(numEvents, activeChannels);
-		if (static_cast<size_t>(numEvents) == events_.size())
-		{
-			events_.resize(events_.size() * 2);
-		}
 	}
 	else if (numEvents == 0)
 	{
-		//LOG_TRACE << " nothing happended";
+		LOG_TRACE << " nothing happended";
 	}
 	else
 	{
@@ -97,7 +81,7 @@ void EpollPoller::fillActiveChannels(int numEvents,
 		activeChannels->push_back(channel);
 	}
 }
-//维护和更新活跃数组
+
 void EpollPoller::updateChannel(Channel* channel)
 {
 	assertInLoopThread();
@@ -137,27 +121,6 @@ void EpollPoller::updateChannel(Channel* channel)
 			update(EPOLL_CTL_MOD, channel);
 		}
 	}
-}
-
-void EpollPoller::removeChannel(Channel* channel)
-{
-	assertInLoopThread();
-	int fd = channel->fd();
-	LOG_TRACE << "fd = " << fd;
-	assert(channels_.find(fd) != channels_.end());
-	assert(channels_[fd] == channel);
-	assert(channel->isNoneEvent());
-	int index = channel->index();
-	assert(index == kAdded || index == kDeleted);
-	size_t n = channels_.erase(fd);
-	(void)n;
-	assert(n == 1);
-
-	if (index == kAdded)
-	{
-		update(EPOLL_CTL_DEL, channel);
-	}
-	channel->set_index(kNew);
 }
 
 void EpollPoller::update(int operation, Channel* channel)
