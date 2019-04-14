@@ -55,7 +55,7 @@ Timestamp EpollPoller::poll(int timeoutMs, ChannelList* activeChannels)
 	}
 	else if (numEvents == 0)
 	{
-		LOG_TRACE << " nothing happended";
+		//LOG_TRACE << " nothing happended";
 	}
 	else
 	{

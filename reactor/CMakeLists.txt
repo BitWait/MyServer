@@ -22,8 +22,12 @@ set(reactor_SRCS
 	../base/configfilereader.cpp
 
 	eventloop.cpp
+	######add 2#######
 	channel.cpp
 	epollpoller.cpp
+	######add 3#######
+	timer.cpp
+	timerQueue.cpp
 )
 
 
