@@ -7,7 +7,7 @@
 struct epoll_event;
 
 namespace reactor{
-
+	class Channel;
 	class EpollPoller
 	{
 	public:
@@ -24,6 +24,7 @@ namespace reactor{
 		}
 		void update(int operation, Channel* channel);
 	private:
+		static const int kInitEventListSize = 16;
 		void fillActiveChannels(int numEvents,
 			ChannelList* activeChannels) const;
 

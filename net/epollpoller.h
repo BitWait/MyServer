@@ -27,8 +27,6 @@ namespace net{
 		{
 			ownerLoop_->assertInLoopThread();
 		}
-
-
 	private:
 		static const int kInitEventListSize = 16;
 

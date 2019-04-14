@@ -24,7 +24,7 @@ int main(void)
 
 	int timerfd = timerfd_create(CLOCK_MONOTONIC, TFD_NONBLOCK | TFD_CLOEXEC);
 	Channel channel(&loop, timerfd);
-	channel.setReadCallBack(timeout);
+	channel.setReadCallBack(std::bind(timeout));
 	channel.enableReading();
 
 	struct itimerspec howlong;

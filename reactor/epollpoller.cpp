@@ -26,13 +26,18 @@ namespace
 
 EpollPoller::EpollPoller(EventLoop* loop)
 :epollfd_(::epoll_create1(EPOLL_CLOEXEC)),
-ownerLoop_(loop)
+ownerLoop_(loop),
+events_(kInitEventListSize)
 {
+	if (epollfd_ < 0)
+	{
+		LOG_SYSFATAL << "EPollPoller::EPollPoller";
+	}
 }
 
 EpollPoller::~EpollPoller()
 {
-
+	::close(epollfd_);
 }
 
 Timestamp EpollPoller::poll(int timeoutMs, ChannelList* activeChannels)

@@ -16,6 +16,7 @@ __thread EventLoop* t_loopInThisThread = 0;
 EventLoop::EventLoop()
 : looping_(false),
 quit_(false),
+poller_(new EpollPoller(this)),
 threadId_(std::this_thread::get_id())
 {
 	if (t_loopInThisThread)
