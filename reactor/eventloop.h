@@ -18,6 +18,7 @@ namespace reactor{
 	public:
 		
 		EventLoop();
+		~EventLoop();
 
 		void loop();
 		void assertInLoopThread()

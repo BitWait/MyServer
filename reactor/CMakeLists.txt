@@ -28,6 +28,8 @@ set(reactor_SRCS
 	######add 3#######
 	timer.cpp
 	timerQueue.cpp
+	######add 6#######
+	eventloopthread.cpp
 )
 
 

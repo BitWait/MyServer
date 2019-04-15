@@ -105,14 +105,16 @@ TimerId TimerQueue::addTimer(const TimerCallBack& cb,
 	double interval)
 {//添加新的定时器
 	Timer* timer = new Timer(cb, when, interval);
-	loop_->assertInLoopThread();
-	bool earliestChanged = insert(timer);
-
-	if (earliestChanged)
-	{
-		resetTimerFd(timerFd_, timer->expiration());
-	}
+	///////////////////////////////5///////////////////////////////////////////
+	loop_->runInLoop(std::bind(&TimerQueue::addTimerInLoop, this, timer));
 	return TimerId(timer, timer->sequence());
+// 	loop_->assertInLoopThread();
+// 	bool earliestChanged = insert(timer
+// 	if (earliestChanged)
+// 	{
+// 		resetTimerFd(timerFd_, timer->expiration());
+// 	}
+// 	return TimerId(timer, timer->sequence());
 }
 
 
@@ -196,3 +198,15 @@ bool TimerQueue::insert(Timer* timer)
 	return earliestChanged;
 }
 
+//////////////////////////////////////5////////////////////////////////////
+void TimerQueue::addTimerInLoop(Timer* timer)
+{
+	loop_->assertInLoopThread();
+	bool earliestChanged = insert(timer);//是否将timer插入set的首部
+
+	//如果插入首部，更新timrfd关注的到期时间
+	if (earliestChanged)
+	{
+		resetTimerFd(timerFd_, timer->expiration());   //启动定时器
+	}
+}

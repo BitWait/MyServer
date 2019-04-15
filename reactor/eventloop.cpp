@@ -65,6 +65,12 @@ threadId_(std::this_thread::get_id())
 	}
 }
 
+EventLoop::~EventLoop()
+{
+	assert(~looping_);
+	t_loopInThisThread = NULL;
+}
+
 void EventLoop::loop()
 {
 	assert(!looping_);

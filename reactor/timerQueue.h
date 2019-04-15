@@ -23,6 +23,7 @@ namespace reactor{
 			Timestamp when,
 			double interval);
 		void handleRead();
+		void addTimerInLoop(Timer *timer);
 
 	private:
 		TimerQueue(const TimerQueue& rhs);
