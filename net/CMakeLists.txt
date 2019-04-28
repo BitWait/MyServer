@@ -59,8 +59,8 @@ add_library(http ${http_SRCS})
 target_link_libraries(http net)
 
 # Ìí¼Ó tests ×ÓÄ¿Â¼
-add_subdirectory(tests)
+#add_subdirectory(tests)
 
-add_subdirectory(examples)
+#add_subdirectory(examples)
 
-add_subdirectory(http)
+#add_subdirectory(http)

@@ -1,97 +1,73 @@
-// Copyright 2010, Shuo Chen.  All rights reserved.
-// http://code.google.com/p/muduo/
-//
-// Use of this source code is governed by a BSD-style license
-// that can be found in the License file.
 
-// Author: Shuo Chen (chenshuo at chenshuo dot com)
-//
-
-#include "HttpServer.h"
+#include "../net/inetaddress.h"
 #include "../base/logging.h"
-#include "HttpContext.h"
-#include "HttpRequest.h"
-#include "HttpResponse.h"
+#include "../base/singleton.h"
+#include "HttpSession.h"
+#include "HttpServer.h"
 
-using namespace net;
-
-
-namespace net
+bool HttpServer::Init(const char* ip, short port, EventLoop* loop)
 {
-	namespace detail
-	{
+	InetAddress addr(ip, port);
+	m_server.reset(new TcpServer(loop, addr, "HTTPSERVER", TcpServer::kReusePort));
+	m_session.setMsgCallBack(std::bind(&HttpServer::onRequest, this, std::placeholders::_1, std::placeholders::_2));
+	m_server->setConnectionCallBack(std::bind(&HttpServer::OnConnection, this, std::placeholders::_1));
 
-		void defaultHttpCallBack(const HttpRequest&, HttpResponse* resp)
-		{
-			resp->setStatusCode(HttpResponse::k404NotFound);
-			resp->setStatusMessage("Not Found");
-			resp->setCloseConnection(true);
-		}
-
-	}  // namespace detail
-}  // namespace net
-
-
-HttpServer::HttpServer(EventLoop* loop,
-	const InetAddress& listenAddr,
-	const string& name,
-	TcpServer::Option option)
-	: server_(loop, listenAddr, name, option),
-	httpCallBack_(detail::defaultHttpCallBack)
-{
-	server_.setConnectionCallBack(
-		std::bind(&HttpServer::onConnection, this, std::placeholders::_1));
-	server_.setMessageCallBack(
-		std::bind(&HttpServer::onMessage, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	m_server->setMessageCallBack(std::bind(&HttpSession::OnRead, &m_session, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+	//Æô¶¯ÕìÌý
+	m_server->start();
+	return true;
 }
 
-void HttpServer::start()
+void HttpServer::OnConnection(std::shared_ptr<TcpConnection> conn)
 {
-	LOG_WARN << "HttpServer[" << server_.name()
-		<< "] starts listenning on " << server_.hostport();
-	server_.start();
-}
+	LOG_INFO << conn->localAddress().toIpPort() << " -> "
+		<< conn->peerAddress().toIpPort() << " is "
+		<< (conn->connected() ? "UP" : "DOWN");
 
-void HttpServer::onConnection(const TcpConnectionPtr& conn)
-{
 	if (conn->connected())
 	{
-		conn->setContext(HttpContext());
+
+	}
+	else
+	{
+
 	}
 }
 
-void HttpServer::onMessage(const TcpConnectionPtr& conn,
-	Buffer* buf,
-	Timestamp receiveTime)
+
+void HttpServer::onRequest(const HttpRequest& req, HttpResponse* resp)
 {
-	HttpContext* context = any_cast<HttpContext>(conn->getMutableContext());
+	std::cout << "Headers " << req.methodString() << " " << req.path() << std::endl;
 
-	if (!context->parseRequest(buf, receiveTime))
+	const std::map<string, string>& headers = req.headers();
+	for (const auto& header : headers)
 	{
-		conn->send("HTTP/1.1 400 Bad Request\r\n\r\n");
-		conn->shutdown();
+		std::cout << header.first << ": " << header.second << std::endl;
 	}
 
-	if (context->gotAll())
+	if (req.path() == "/")
 	{
-		onRequest(conn, context->request());
-		context->reset();
+		resp->setStatusCode(HttpResponse::k200Ok);
+		resp->setStatusMessage("OK");
+		resp->setContentType("text/html");
+		resp->addHeader("Server", "BitWait");
+		string now = Timestamp::now().toFormattedString();
+		resp->setBody("<html><head><title>This is title</title></head>"
+			"<body><h1>Hello</h1>Now is " + now +
+			"</body></html>");
+	}
+	else if (req.path() == "/hello")
+	{
+		resp->setStatusCode(HttpResponse::k200Ok);
+		resp->setStatusMessage("OK");
+		resp->setContentType("text/plain");
+		resp->addHeader("Server", "BitWait");
+		resp->setBody("hello, world!\n");
+	}
+	else
+	{
+		resp->setStatusCode(HttpResponse::k404NotFound);
+		resp->setStatusMessage("Not Found");
+		resp->setCloseConnection(true);
 	}
 }
-
-void HttpServer::onRequest(const TcpConnectionPtr& conn, const HttpRequest& req)
-{
-	const string& connection = req.getHeader("Connection");
-	bool close = connection == "close" ||
-		(req.getVersion() == HttpRequest::kHttp10 && connection != "Keep-Alive");
-	HttpResponse response(close);
-	httpCallBack_(req, &response);
-	Buffer buf;
-	response.appendToBuffer(&buf);
-	conn->send(&buf);
-	if (response.closeConnection())
-	{
-		conn->shutdown();
-	}
-}
-

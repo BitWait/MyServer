@@ -18,6 +18,8 @@ private:
 public:
     static bool Encode(const std::string& src, std::string& dst);
     static bool Decode(const std::string& src, std::string& dst);
+	static std::string URLEncode(const std::string &sIn);
+	static std::string URLDecode(const std::string &sIn);
 
 };
 

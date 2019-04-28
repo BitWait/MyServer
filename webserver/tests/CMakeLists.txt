@@ -1,9 +1,0 @@
-
-add_executable(HttpClient_test HttpClient_test.cpp)
-target_link_libraries(HttpClient_test HttpClient)
-
-add_executable(HttpServer_test HttpServer_test.cpp)
-target_link_libraries(HttpServer_test HttpServer)
-
-add_executable(HttpRequest_test HttpRequest_test.cpp)
-target_link_libraries(HttpRequest_test HttpServer)

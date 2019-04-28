@@ -1,62 +1,45 @@
-// Copyright 2010, Shuo Chen.  All rights reserved.
-// http://code.google.com/p/muduo/
-//
-// Use of this source code is governed by a BSD-style license
-// that can be found in the License file.
+/**
+* 聊天服务支持http请求, HttpServer.h
+* zhangyl 2018.05.16
+*/
+#ifndef __HTTP_SERVER_H__
+#define __HTTP_SERVER_H__
 
-// Author: Shuo Chen (chenshuo at chenshuo dot com)
-//
-// This is a public header file, it must only include public header files.
-
-#ifndef NET_HTTP_HTTPSERVER_H
-#define NET_HTTP_HTTPSERVER_H
-
-
+#include <memory>
+#include <mutex>
+#include <list>
+#include "../net/eventloop.h"
 #include "../net/tcpserver.h"
+#include "../net/http/HttpRequest.h"
+#include "../net/http/HttpResponse.h"
+#include "HttpSession.h"
 
-namespace net
+using namespace net;
+
+class HttpSession;
+
+class HttpServer final
 {
+public:
+	HttpServer() = default;
+	~HttpServer() = default;
 
-	class HttpRequest;
-	class HttpResponse;
+	HttpServer(const HttpServer& rhs) = delete;
+	HttpServer& operator =(const HttpServer& rhs) = delete;
 
-	/// A simple embeddable HTTP server designed for report status of a program.
-	/// It is not a fully HTTP 1.1 compliant server, but provides minimum features
-	/// that can communicate with HttpClient and Web browser.
-	/// It is synchronous, just like Java Servlet.
-	class HttpServer
-	{
-	public:
-		typedef std::function<void(const HttpRequest&,
-			HttpResponse*)> HttpCallBack;
+public:
+	bool Init(const char* ip, short port, EventLoop* loop);
 
-		HttpServer(EventLoop* loop,
-			const InetAddress& listenAddr,
-			const string& name,
-			TcpServer::Option option = TcpServer::kNoReusePort);
+	//新连接到来调用或连接断开，所以需要通过conn->connected()来判断，一般只在主loop里面调用
+	void OnConnection(std::shared_ptr<TcpConnection> conn);
+	//连接断开
+	void OnClose(const std::shared_ptr<TcpConnection>& conn);
+	void onRequest(const HttpRequest& req, HttpResponse* resp);
 
-		EventLoop* getLoop() const { return server_.getLoop(); }
-
-		/// Not thread safe, callback be registered before calling start().
-		void setHttpCallBack(const HttpCallBack& cb)
-		{
-			httpCallBack_ = cb;
-		}
-
-		void start();
-
-	private:
-		void onConnection(const TcpConnectionPtr& conn);
-		void onMessage(const TcpConnectionPtr& conn,
-			Buffer* buf,
-			Timestamp receiveTime);
-		void onRequest(const TcpConnectionPtr&, const HttpRequest&);
-
-		TcpServer server_;
-		HttpCallBack httpCallBack_;
-	};
-
-}  // namespace net
+private:
+	std::shared_ptr<TcpServer>                     m_server;
+	HttpSession m_session;
+};
 
 
-#endif  // MUDUO_NET_HTTP_HTTPSERVER_H
+#endif //!__HTTP_SERVER_H__

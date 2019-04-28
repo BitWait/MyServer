@@ -22,6 +22,7 @@ set(base_SRCS
 	LogStream.cpp
 	fileutil.cpp
 	configfilereader.cpp
+	threadpool.cpp
 )
 
 

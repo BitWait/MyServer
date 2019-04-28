@@ -10,6 +10,8 @@
 
 #include "../buffer.h"
 #include "HttpContext.h"
+#include <iostream>
+#include <sstream>
 
 using namespace net;
 
@@ -28,7 +30,7 @@ bool HttpContext::processRequestLine(const char* begin, const char* end)
 			if (question != space)
 			{
 				request_.setPath(start, question);
-				request_.setQuery(question, space);
+				request_.setQuery(question + 1, space);
 			}
 			else
 			{
@@ -99,8 +101,9 @@ bool HttpContext::parseRequest(Buffer* buf, Timestamp receiveTime)
 				{
 					// empty line, end of header
 					// FIXME:
-					state_ = kGotAll;
-					hasMore = false;
+					// 					state_ = kGotAll;
+					// 					hasMore = false;
+					state_ = kExpectBody;
 				}
 				buf->retrieveUntil(crlf + 2);
 			}
@@ -111,8 +114,39 @@ bool HttpContext::parseRequest(Buffer* buf, Timestamp receiveTime)
 		}
 		else if (state_ == kExpectBody)
 		{
-			// FIXME:
+			stringstream ss;
+			int32_t length = 0;
+			ss << request_.getHeader("Content-Length");
+			ss >> length;
+			std::cout << length;
+			if (processRequestBody(buf->peek(), buf->peek() + length))
+			{
+				state_ = kGotAll;
+			}
+			hasMore = false;
 		}
 	}
 	return ok;
+}
+
+bool HttpContext::processRequestBody(const char* begin, const char* end)
+{
+	bool nRet = false;
+	do 
+	{
+		if (end - begin)
+		{
+			request_.setQuery(begin, end);
+			nRet = true;
+			break;
+		}
+
+		if (request_.method() == HttpRequest::kGet)
+		{
+			nRet = true;
+			break;
+		}
+	} while (false);
+
+	return nRet;
 }
