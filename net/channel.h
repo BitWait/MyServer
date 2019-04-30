@@ -72,6 +72,7 @@ namespace net{
 		void disableAll() { events_ = kNoneEvent; update(); }
 		/* 是否注册了读写事件 */
 		bool isWriting() const { return events_ & kWriteEvent; }
+		bool isReading() const { return events_ & kReadEvent; }
 
 		// for Poller
 		int index() { return index_; }

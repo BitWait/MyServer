@@ -37,7 +37,7 @@ public:
 		return name_;
 	}
 
-	//size_t queueSize() const;
+	size_t queueSize() const;
 
 	// Could block if maxQueueSize > 0
 	void run(Task f);

@@ -37,6 +37,7 @@ TcpConnection::TcpConnection(EventLoop* loop,
 	channel_(new Channel(loop, sockfd)),
 	localAddr_(localAddr),
 	peerAddr_(peerAddr),
+	reading_(true),
 	highWaterMark_(64 * 1024 * 1024)
 {
 	channel_->setReadCallBack(std::bind(&TcpConnection::handleRead, this, std::placeholders::_1));
@@ -258,6 +259,35 @@ void TcpConnection::forceCloseInLoop()
 	}
 }
 
+void TcpConnection::startRead()
+{
+	loop_->runInLoop(std::bind(&TcpConnection::startReadInLoop, this));
+}
+
+void TcpConnection::startReadInLoop()
+{
+	loop_->assertInLoopThread();
+	if (!reading_ || !channel_->isReading())
+	{
+		channel_->enableReading();
+		reading_ = true;
+	}
+}
+
+void TcpConnection::stopRead()
+{
+	loop_->runInLoop(std::bind(&TcpConnection::stopReadInLoop, this));
+}
+
+void TcpConnection::stopReadInLoop()
+{
+	loop_->assertInLoopThread();
+	if (reading_ || channel_->isReading())
+	{
+		channel_->disableReading();
+		reading_ = false;
+	}
+}
 const char* TcpConnection::stateToString() const
 {
 	switch (state_)

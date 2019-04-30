@@ -5,9 +5,11 @@
 #include "HttpSession.h"
 #include "HttpServer.h"
 
-bool HttpServer::Init(const char* ip, short port, EventLoop* loop)
+bool HttpServer::Init(const char* ip, short port, EventLoop* loop, int maxConnections)
 {
 	InetAddress addr(ip, port);
+	kMaxConnections_ = maxConnections;
+	s_numConnections_ = 0;
 	m_server.reset(new TcpServer(loop, addr, "HTTPSERVER", TcpServer::kReusePort));
 	m_session.setMsgCallBack(std::bind(&HttpServer::onRequest, this, std::placeholders::_1, std::placeholders::_2));
 	m_server->setConnectionCallBack(std::bind(&HttpServer::OnConnection, this, std::placeholders::_1));
@@ -26,11 +28,15 @@ void HttpServer::OnConnection(std::shared_ptr<TcpConnection> conn)
 
 	if (conn->connected())
 	{
-
+		++s_numConnections_;
+		if (s_numConnections_ > kMaxConnections_)
+		{
+			conn->shutdown();
+		}
 	}
 	else
 	{
-
+		--s_numConnections_;
 	}
 }
 

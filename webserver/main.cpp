@@ -17,7 +17,6 @@
 #include "../net/eventloopthreadpool.h"
 #include "../mysql/mysqlmanager.h"
 #include "HttpServer.h"
-#include "businesslogic.h"
 
 extern void defaultOutput(const char* msg, int len);
 
@@ -121,14 +120,14 @@ int main(int argc, char* argv[])
 	{
 		LOG_FATAL << "Init mysql failed, please check your database config..............";
 	}
-	Singleton<BusinessLogic>::Instance().Init(dbserver, dbuser, dbpassword, dbname);
 
 	Singleton<EventLoopThreadPool>::Instance().Init(&g_mainLoop, 4);
 	Singleton<EventLoopThreadPool>::Instance().start();
 
 	const char* httplistenip = config.getConfigName("httplistenip");
 	short httplistenport = (short)atol(config.getConfigName("httplistenport"));
-	Singleton<HttpServer>::Instance().Init(httplistenip, httplistenport, &g_mainLoop);
+	int maxConnections = atoi(config.getConfigName("maxconnections"));
+	Singleton<HttpServer>::Instance().Init(httplistenip, httplistenport, &g_mainLoop, maxConnections);
 
 	g_mainLoop.loop();
 

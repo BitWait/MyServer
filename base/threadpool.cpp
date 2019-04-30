@@ -47,7 +47,7 @@ void ThreadPool::stop()
 	{
 		std::unique_lock<std::mutex> lock(mutex_);
 		running_ = false;
-		notEmpty_.notify_all();
+		notEmpty_.notify_one();
 	}
 	for (auto& thr : threads_)
 	{
@@ -55,11 +55,12 @@ void ThreadPool::stop()
 	}
 }
 
-// size_t ThreadPool::queueSize() const
-// {
-// 	std::unique_lock<std::mutex> lock(mutex_);
-// 	return queue_.size();
-// }
+size_t ThreadPool::queueSize() const
+{
+	std::lock_guard<std::mutex> lck(mutex_);
+	//std::unique_lock<std::mutex> lock(mutex_);
+	return queue_.size();
+}
 
 void ThreadPool::run(Task task)
 {
@@ -77,7 +78,7 @@ void ThreadPool::run(Task task)
 		assert(!isFull());
 
 		queue_.push_back(std::move(task));
-		notEmpty_.notify_all();
+		notEmpty_.notify_one();
 	}
 }
 
@@ -96,7 +97,7 @@ ThreadPool::Task ThreadPool::take()
 		queue_.pop_front();
 		if (maxQueueSize_ > 0)
 		{
-			notFull_.notify_all();
+			notFull_.notify_one();
 		}
 	}
 	return task;

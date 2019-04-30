@@ -94,7 +94,6 @@ HttpClient.cpp
 HttpServer.cpp
 HttpSession.cpp
 main.cpp
-businesslogic.cpp
 )
 
 add_executable(httpserver ${net_srcs} ${webserver_srcs} ${zlib_srcs} ${utils_srcs} ${mysql_srcs} ${database_srcs} ${json_srcs})

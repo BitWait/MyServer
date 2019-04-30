@@ -55,6 +55,8 @@ namespace net{
 		// void shutdownAndForceCloseAfter(double seconds); // NOT thread safe, no simultaneous calling
 		void forceClose();
 		void setTcpNoDelay(bool on);
+		void startRead();
+		void stopRead();
 
 		void setConnectionCallBack(const ConnectionCallBack& cb)
 		{
@@ -121,11 +123,14 @@ namespace net{
 		void forceCloseInLoop();
 		void setState(StateE s) { state_ = s; }
 		const char* stateToString() const;
+		void startReadInLoop();
+		void stopReadInLoop();
 
 	private:
 		EventLoop*                  loop_;
 		const string                name_;
 		StateE                      state_;
+		bool reading_;
 
 		std::shared_ptr<Socket>     socket_;
 		std::shared_ptr<Channel>    channel_;
