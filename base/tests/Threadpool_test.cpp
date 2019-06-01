@@ -1,16 +1,19 @@
-
 #include "../countdownlatch.h"
 #include "../threadpool.h"
 #include "../logging.h"
 #include <stdio.h>
 #include <unistd.h>  // usleep
 #include <thread>
+#include <sstream>
+#include <iostream>
 
 using namespace std;
 
 void print()
 {
-	printf("tid=%d\n", std::this_thread::get_id());
+	std::stringstream ss;	
+	ss << "tid= = " << std::this_thread::get_id();
+	std::cout << ss.str() << std::endl;
 }
 
 void printString(const std::string& str)

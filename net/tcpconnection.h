@@ -130,12 +130,13 @@ namespace net{
 		EventLoop*                  loop_;
 		const string                name_;
 		StateE                      state_;
-		bool reading_;
+		
 
 		std::shared_ptr<Socket>     socket_;
 		std::shared_ptr<Channel>    channel_;
 		const InetAddress           localAddr_;
 		const InetAddress           peerAddr_;
+		bool reading_;
 
 		ConnectionCallBack          connectionCallBack_;
 		MessageCallBack             messageCallBack_;

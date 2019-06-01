@@ -6,6 +6,7 @@ using namespace std;
 
 namespace FileUtil
 {
+	//这个类主要是将文件内容读取出来
 	class ReadSmallFile
 	{
 	public:
@@ -22,9 +23,9 @@ namespace FileUtil
 		const char * buffer()const{ return buf_; }
 		static const int kBufferSize = 64 * 1024;
 	private:
-		int fd_;
-		int err_;
-		char buf_[kBufferSize];
+		int fd_;//缓冲区
+		int err_;//错误代码
+		char buf_[kBufferSize];//缓冲区
 
 	};
 
@@ -40,6 +41,7 @@ namespace FileUtil
 		return file.readToString(maxSize, content, fileSize, modifyTime, createTime);
 	}
 
+	//这个类主要是将数据写入到文件
 	class AppendFile
 	{
 	public:
@@ -52,8 +54,8 @@ namespace FileUtil
 
 		size_t write(const char* logline, size_t len);
 	private:
-		FILE *fp_;
-		char buf_[64 * 1024];
-		size_t writtenBytes_;
+		FILE *fp_;//打开的流
+		char buf_[64 * 1024];//打开流的缓冲区
+		size_t writtenBytes_;//已经添加的长度
 	};
 }

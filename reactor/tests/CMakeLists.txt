@@ -2,9 +2,9 @@
 
 #target_link_libraries(EventLoop_test reactor)
 
-#add_executable(Reactor_test Reactor_test.cpp)
+add_executable(Reactor_test Reactor_test.cpp)
 
-#target_link_libraries(Reactor_test reactor)
+target_link_libraries(Reactor_test reactor)
 
 add_executable(timerqueue_test timerqueue_test.cpp)
 

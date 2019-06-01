@@ -33,7 +33,7 @@ void onServerConnection(const TcpConnectionPtr& conn)
 
 void onServerMessage(const TcpConnectionPtr& conn, Buffer* buf, Timestamp)
 {
-	LOG_DEBUG << conn->name() << " " << buf->readableBytes();
+	LOG_DEBUG << conn->name() << " " << buf->readableBytes() << "-------------------------" << buf->toStringPiece();
 	if (g_tunnels.find(conn->name()) == g_tunnels.end())
 	{
 		if (buf->readableBytes() > 128)

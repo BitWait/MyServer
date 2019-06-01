@@ -7,16 +7,18 @@
 #include "../net/buffer.h"
 #include "../base/timestamp.h"
 #include "../net/tcpconnection.h"
-#include "../net/http/HttpRequest.h"
-#include "../net/http/HttpResponse.h"
 #include <memory>
 #include <functional>
 
-class net::HttpRequest;
-class net::HttpResponse;
+namespace net{
+	class HttpRequest;
+	class HttpResponse;
+}
+
 class HttpSession
 {
 public:
+
 	typedef std::function<void(const net::HttpRequest& req, net::HttpResponse* resp)> MsgCallBack;
 	HttpSession() = default;
 	~HttpSession() = default;

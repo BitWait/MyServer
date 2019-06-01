@@ -3,6 +3,7 @@
  * zhangyl 2018.03.09
  */
 #include "StringUtil.h"
+#include <sstream>
 
 void StringUtil::Split(const std::string& str, std::vector<std::string>& v, const char* delimiter/* = "|"*/)
 {
@@ -29,4 +30,16 @@ void StringUtil::Split(const std::string& str, std::vector<std::string>& v, cons
             break;
         }           
     }
+}
+
+std::string StringUtil::Int2String(uint32_t user_id)
+{
+	std::stringstream ss;
+	ss << user_id;
+	return ss.str();
+}
+
+uint32_t StringUtil::String2Int(const std::string& value)
+{
+	return (uint32_t)atoi(value.c_str());
 }

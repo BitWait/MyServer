@@ -30,9 +30,10 @@ namespace net{
 		EventLoop*            loop_;
 		Socket                acceptSocket_;
 		bool                  listening_;
-		int                   idleFd_;
+		
 		NewConnectCallBack    newConnectCallBack_;
 		Channel               acceptChannel_;
+		int                   idleFd_;
 	};
 
 }

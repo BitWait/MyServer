@@ -90,10 +90,10 @@ void Logger::setFlushFunc(FlushFunc flush)
 
 Logger::Impl::Impl(LogLevel level, int savedErrno, const SourceFile& file, int line)
 :time_(Timestamp::now()),
+stream_(),
 level_(level),
-baseName_(file),
 line_(line),
-stream_()
+baseName_(file)
 {
 	formatTime();
 	stream_ << T(LogLevelName[level], 6);

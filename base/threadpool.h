@@ -3,8 +3,8 @@
 //
 // Author: Shuo Chen (chenshuo at chenshuo dot com)
 
-#ifndef MUDUO_BASE_THREADPOOL_H
-#define MUDUO_BASE_THREADPOOL_H
+#ifndef BASE_THREADPOOL_H
+#define BASE_THREADPOOL_H
 
 #include <deque>
 #include <vector>
@@ -37,7 +37,7 @@ public:
 		return name_;
 	}
 
-	size_t queueSize() const;
+	size_t queueSize();
 
 	// Could block if maxQueueSize > 0
 	void run(Task f);

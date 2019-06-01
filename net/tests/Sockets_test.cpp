@@ -32,19 +32,13 @@ int main(void)
 	LOG_INFO << addr.toPort();
 
 	EventLoop loop;
-	//g_loop = &loop;
 	Accept accept(&loop, addr, true);
 	
 	assert(!accept.listening());
 	
-	//accept.setNewConnectCallBack(newConnection);
+	accept.setNewConnectCallBack(newConnection);
 
 	accept.listen();
 
-	while (1)
-	{
-		;
-	}
-
-	//loop.loop();
+	loop.loop();
 }

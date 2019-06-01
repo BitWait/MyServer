@@ -17,6 +17,8 @@ private:
 
 public:
     static void Split(const std::string& str, std::vector<std::string>& v, const char* delimiter = "|");
+	static std::string Int2String(uint32_t user_id);
+	static uint32_t String2Int(const std::string& value);
 };
 
 

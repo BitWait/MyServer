@@ -55,7 +55,7 @@ void ThreadPool::stop()
 	}
 }
 
-size_t ThreadPool::queueSize() const
+size_t ThreadPool::queueSize()
 {
 	std::lock_guard<std::mutex> lck(mutex_);
 	//std::unique_lock<std::mutex> lock(mutex_);
